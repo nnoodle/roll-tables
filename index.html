@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <title>Roll Tables</title>
+    <meta name="description" content="Create and use roll tables.">
+    <meta name="author" content="Noodles!">
+    <!-- <link rel="icon" href="favicon.ico"> -->
+    <meta property="og:title" content="Roll Tables">
+    <meta property="og:url" content="https://nnoodle.github.io/roll-tables">
+    <!-- <meta property="og:image" content=""> -->
+    <meta property="og:description" content="Create and use roll tables.">
+    <meta property="og:type" content="website">
+
+    <!-- <meta property="twitter:card" content=""> -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/pieroxy/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/LZMA-JS/LZMA-JS@2.3.0/src/lzma_worker-min.js"></script>
+         <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/beatgammit/base64-js@1.3.1/base64js.min.js"></script> -->
+  </head>
+  <body>
+    <div id="app">
+      <button id="roll-btn" type="button">roll</button>
+      result: <span id="result"></span>
+      <div></div>
+      <input type="text" id="tablename"
+             name="tblname" placeholder="table name">
+      <table id="dicetable">
+        <thead>
+          <tr>
+            <th>
+              <input type="text" id="diceinput" name="dice"
+                     size="2" placeholder="2d6" value="1d6">
+            </th>
+            <th>value</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <footer>
+      <center>Inspired by <a href="https://itty.bitty.site">itty.bitty.site</a></center>
+    </footer>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>

@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="manifest" href="manifest.json"> -->
-    <title>Roll Tables</title>
+    <title>🎲 Roll Tables</title>
     <meta name="description" content="Create and use roll tables.">
     <meta name="author" content="Noodles!">
-    <!-- <link rel="icon" href="favicon.ico"> -->
     <meta property="og:title" content="Roll Tables">
     <meta property="og:url" content="https://nnoodle.github.io/roll-tables">
     <!-- <meta property="og:image" content=""> -->
@@ -25,27 +24,36 @@
   </head>
   <body>
     <div id="app">
-      <button id="roll-btn" type="button">roll</button>
-      result: <span id="result"></span>
-      <div></div>
-      <input type="text" id="tablename"
-             name="tblname" placeholder="table name">
-      <table id="dicetable">
-        <thead>
-          <tr>
-            <th>
-              <input type="text" id="diceinput" name="dice"
-                     size="2" placeholder="2d6" value="1d6">
-            </th>
-            <th>value</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div>
+        <button type="button" v-on:click="rollTable">roll</button> {{ result }}
+        <div></div>
+        <input type="text" id="tablename" v-model="t.name"
+               name="tblname" placeholder="table name">
+        <table id="dicetable">
+          <thead>
+            <tr>
+              <th>
+                <input type="text" name="dice" placeholder="2d6"
+                       v-model="dice" v-on:change="updateDice" size="2">
+              </th>
+              <th>value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="{ dc, val } of t.data" v-bind:key="dc">
+              <th>{{ dc }}</th>
+              <td>
+                <textarea placeholder="…" rows="1" cols="40"
+                          v-on:keyup="updateEntry(dc, $event)" v-model="val">
+                </textarea></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <footer>
+        <center>Inspired by <a href="https://itty.bitty.site">itty.bitty.site</a></center>
+      </footer>
     </div>
-    <footer>
-      <center>Inspired by <a href="https://itty.bitty.site">itty.bitty.site</a></center>
-    </footer>
     <script type="text/javascript" src="script.js"></script>
   </body>
 </html>

@@ -6,20 +6,20 @@
     <!-- <link rel="manifest" href="manifest.json"> -->
     <title>Roll Tables</title>
     <link rel="icon" href="favicon.png">
-    <meta name="description" content="Create and use roll tables.">
+    <meta name="description" content="Create, share, and roll tables.">
     <meta name="author" content="Noodles!">
     <meta property="og:title" content="Roll Tables">
     <meta property="og:url" content="https://nnoodle.github.io/roll-tables">
     <meta property="og:image" content="https://nnoodle.github.io/roll-tables/favicon.png">
-    <meta property="og:description" content="Create and use roll tables.">
+    <meta property="og:description" content="Create, share, and roll tables.">
     <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
     <link rel="stylesheet" href="style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/pieroxy/lz-string@1.4.4/libs/lz-string.min.js"></script>
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/LZMA-JS/LZMA-JS@2.3.0/src/lzma_worker-min.js"></script>
@@ -31,12 +31,12 @@
         <ul class="saved-table-list">
           <li v-for="tbl in Object.keys(savedTables).sort()"
               class="saved-table">
+            <button class="delete-button button-small" title="delete table"
+                    v-on:click="deleteTable(tbl)">⨯</button>
             <input type="checkbox" class="checkbox"
                    v-model="savedTables[tbl].roll"
                    v-on:click="toggleRoll(tbl, $event)">
             <a v-bind:href="'#'+savedTables[tbl].link" v-on:click="loadTable(tbl)">{{ tbl }}</a>
-            <button class="delete-button button-small" title="delete table"
-                    v-on:click="deleteTable(tbl)">🗑</button>
           </li>
         </ul>
       </nav>
@@ -45,7 +45,7 @@
           <div>
             <input type="checkbox" class="checkbox" v-model="rollCurrentTable">
             <button type="button" title="roll table(s)" class="button-outline button-small"
-                    v-on:click="doRoll">🎲</button>
+                    v-on:click="doRoll">roll</button>
             <output v-if="!Array.isArray(result)">{{ result }}</output>
             <output v-else>
               <ul>
@@ -56,7 +56,7 @@
           <div>
             <div>
               <input type="text" v-model="t.name" placeholder="table name">
-              <button type="button" v-on:click="saveTable">save</button>
+              <button type="button" title="save table" v-on:click="saveTable">save</button>
               <output><code>{{ hash.length }} bytes</code></output>
             </div>
             <table id="dicetable">

@@ -1,11 +1,13 @@
 
 const compress = dat => LZString.compressToBase64(JSON.stringify(dat))
 const decompress = dat => JSON.parse(LZString.decompressFromBase64(dat))
+const compressA = dat => LZString.compress(JSON.stringify(dat))
+const decompressA = dat => JSON.parse(LZString.decompress(dat))
 // const compress = dat => base64js.fromByteArray(LZMA.compress(JSON.stringify(dat)))
 // const decompress = dat => JSON.parse(LZMA.decompress(base64js.toByteArray(dat)))
 
 if (!localStorage.getItem('savedTables'))
-  localStorage.setItem('savedTables', compress({}))
+  localStorage.setItem('savedTables', compressA({}))
 
 var app = new Vue({
   el: '#app',
@@ -52,7 +54,10 @@ var app = new Vue({
   watch: {
     't.name': updateLink,
     savedTables: function(tbls) {
-      localStorage.setItem('savedTables', compress(tbls))
+      let o = {}
+      for (i in this.savedTables)
+        o[i] = this.savedTables[i].link
+      localStorage.setItem('savedTables', compressA(o))
     },
   },
 
@@ -60,8 +65,14 @@ var app = new Vue({
     const hash = window.location.hash.substring(1)
     if (hash)
       try { this.t = unscrunch(decompress(hash)) } catch(e) {}
+
+    const decomp = decompressA(localStorage.getItem('savedTables'))
+    let o = {}
+    for (i in decomp)
+      o[i] = { link: decomp[i] }
+    this.savedTables = o
+
     this.syncDiceView()
-    this.savedTables = decompress(localStorage.getItem('savedTables'))
   },
 
   methods: {
@@ -101,7 +112,10 @@ var app = new Vue({
         results.push(rollTable(this.t.data, this.t.amount, this.t.sides))
       Object.values(this.savedTables)
         .filter(({roll}) => roll)
-        .forEach(({t}) => results.push(`[${t.name}] ${rollTable(t.data, t.amount, t.sides)}`))
+        .forEach(({link}) => {
+          t = unscrunch(decompressA(link))
+          results.push(`｢ ${t.name} ｣ ${rollTable(t.data, t.amount, t.sides)}`)
+        })
       this.result = results.length <= 1 ? results[0] : results
     },
 
@@ -122,15 +136,13 @@ var app = new Vue({
 
     saveTable: function() {
       Vue.set(this.savedTables, this.t.name, {
-        name: this.t.name,
-        t: this.t,
         link: compress(scrunch(this.t)),
         roll: !!this.savedTables[this.t.name] && this.savedTables[this.t.name].roll,
       })
     },
 
     loadTable: function(name) {
-      this.t = this.savedTables[name].t
+      this.t = unscrunch(decompress(this.savedTables[name].link))
       this.syncDiceView()
     },
 
@@ -164,7 +176,7 @@ function rollTable(table, amount, sides) {
   const list = [{dc: 0, val: '*nothing*'}]
         .concat(table)
         .concat([{dc: Infinity, val: 'infinite jest'}])
-  return list.find(({dc}, i, l) => l[i+1].dc > roll).val
+  return `（${roll}） `+list.find(({dc}, i, l) => l[i+1].dc > roll).val
 }
 
 function scrunch (t) {

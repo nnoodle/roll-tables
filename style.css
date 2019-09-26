@@ -31,7 +31,7 @@ output {
 }
 
 .button-small {
-  font-size: .8rem;
+  font-size: .9rem;
   height: 2.8rem;
   line-height: 2.8rem;
   padding: 0 1.5rem;
@@ -48,9 +48,14 @@ output {
 }
 
 .delete-button {
-  float: right;
+  /* float: right; */
+  margin-right: 1em;
 }
 
 .checkbox {
   margin-right: 1em;
+}
+
+#copy-link {
+  margin-left: 1em;
 }

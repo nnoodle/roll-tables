@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="manifest" href="manifest.json"> -->
-    <title>🎲 Roll Tables</title>
+    <title>Roll Tables</title>
+    <link rel="icon" href="favicon.png">
     <meta name="description" content="Create and use roll tables.">
     <meta name="author" content="Noodles!">
     <meta property="og:title" content="Roll Tables">
     <meta property="og:url" content="https://nnoodle.github.io/roll-tables">
-    <!-- <meta property="og:image" content=""> -->
+    <meta property="og:image" content="https://nnoodle.github.io/roll-tables/favicon.png">
     <meta property="og:description" content="Create and use roll tables.">
     <meta property="og:type" content="website">
 
@@ -24,34 +25,67 @@
   </head>
   <body>
     <div id="app">
-      <div>
-        <button type="button" v-on:click="rollTable">roll</button> {{ result }}
-        <div></div>
-        <input type="text" id="tablename" v-model="t.name"
-               name="tblname" placeholder="table name">
-        <table id="dicetable">
-          <thead>
-            <tr>
-              <th>
-                <input type="text" name="dice" placeholder="2d6"
-                       v-model="dice" v-on:change="updateDice" size="2">
-              </th>
-              <th>value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="{ dc, val } of t.data" v-bind:key="dc">
-              <th>{{ dc }}</th>
-              <td>
-                <textarea placeholder="…" rows="1" cols="40"
-                          v-on:keyup="updateEntry(dc, $event)" v-model="val">
-                </textarea></td>
-            </tr>
-          </tbody>
-        </table>
+      <div id="interface">
+        <nav v-if="Object.keys(savedTables).length">
+          <ol>
+            <li v-for="tbl in Object.keys(savedTables).sort()">
+              <input type="checkbox" v-model="savedTables[tbl].roll"
+                     v-on:click="toggleRoll(tbl, $event)">
+              <a v-bind:href="'#'+savedTables[tbl].link" v-on:click="loadTable(tbl)">{{ tbl }}</a>
+              <button v-on:click="deleteTable(tbl)">delete</button>
+            </li>
+          </ol>
+        </nav>
+        <main>
+          <div>
+            <input type="checkbox" v-model="rollCurrentTable">
+            <button type="button" title="roll table(s)" v-on:click="doRoll">🎲</button>
+            <output v-if="!Array.isArray(result)">
+              {{ result }}
+            </output>
+            <output v-else>
+              <ul>
+                <li v-for="i of result">
+                  {{ i }}
+                </li>
+              </ul>
+            </output>
+          </div>
+          <div>
+            <div>
+              <input type="text" v-model="t.name" placeholder="table name">
+              <button type="button" v-on:click="saveTable">save</button>
+              <output><code>{{ hash.length }} bytes</code></output>
+            </div>
+            <table id="dicetable">
+              <thead>
+                <tr>
+                  <th>
+                    <input type="text" placeholder="2d6" size="2"
+                           v-model="dice" v-on:change="updateDice">
+                  </th>
+                  <th>value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="{ dc, val } of t.data" v-bind:key="dc">
+                  <td>
+                    <input type="number" min="1" placeholder="DC" v-bind:data-dc="dc"
+                           v-model="dc" v-on:change="changeDC">
+                  </td>
+                  <td>
+                    <textarea placeholder="…" rows="1" cols="40"
+                              v-on:keyup="updateEntry(dc, $event)" v-model="val">
+                    </textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
       </div>
       <footer>
-        <center>Inspired by <a href="https://itty.bitty.site">itty.bitty.site</a></center>
+        <center>inspired by <a href="https://itty.bitty.site">itty.bitty.site</a></center>
       </footer>
     </div>
     <script type="text/javascript" src="script.js"></script>

@@ -1,4 +1,16 @@
-body {
+body, textarea {
   font-family: sans;
   color: #333;
+}
+
+textarea {
+  font-size: small;
+}
+
+#interface {
+  display: flex;
+}
+
+nav {
+  margin-right: 1em;
 }

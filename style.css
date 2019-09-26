@@ -1,16 +1,56 @@
 body, textarea {
-  font-family: sans;
+  font-family: 'Source Sans Pro', sans;
   color: #333;
+  margin: 2rem;
 }
 
 textarea {
   font-size: small;
 }
 
-#interface {
+#app {
   display: flex;
 }
 
 nav {
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+}
+
+main {
+  margin-left: 25%;
+  padding: 0px 10px;
+}
+
+output {
+  margin: 1em;
+}
+
+.button-small {
+  font-size: .8rem;
+  height: 2.8rem;
+  line-height: 2.8rem;
+  padding: 0 1.5rem;
+}
+
+.saved-table-list {
+  list-style: none;
+  margin-top: 2em;
+}
+
+.saved-table {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.delete-button {
+  float: right;
+}
+
+.checkbox {
   margin-right: 1em;
 }
